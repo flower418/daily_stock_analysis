@@ -9,7 +9,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-- [修复] 调整 Web/桌面端左侧导航选中态宽度与内容对齐，避免蓝色选中框溢出侧栏边界。
 - [改进] 首次运行配置校验补充缺失 AI Key、空 STOCK_LIST、Telegram/邮件成对字段和 Webhook URL 前缀诊断。
 - [新功能] 桌面端新增“云端任务”页，可通过本机保存的 GitHub Actions 配置查看并手动触发每日分析 workflow。
 - [改进] AlphaSift 选股入口在 Web 侧边栏中移动到“问股”下方，贴近 Agent/研究辅助工作流。
