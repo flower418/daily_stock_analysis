@@ -247,6 +247,23 @@ win-unpacked/
   - `STOCK_LIST`：自选股列表（逗号分隔）
   - 其他可选配置参考 `.env.example`
 
+### GitHub Actions 云端任务联动
+
+桌面端可以在左侧“云端任务”页面查看并手动触发 GitHub Actions 中的每日分析 workflow。该能力只连接云端任务，不会把本机 `.env` 自动同步到 GitHub Secrets；云端运行仍使用 GitHub Secrets / Variables 中的模型、股票和通知配置。
+
+在桌面端 `系统设置 -> 系统设置` 中填写：
+
+```env
+GITHUB_ACTIONS_REPO=flower418/daily_stock_analysis
+GITHUB_ACTIONS_TOKEN=github_pat_...
+GITHUB_ACTIONS_WORKFLOW=00-daily-analysis.yml
+GITHUB_ACTIONS_BRANCH=main
+```
+
+Token 建议使用 GitHub fine-grained token，只授权目标 fork 仓库，并授予读取 Actions 运行记录和触发 workflow dispatch 所需权限。Token 保存在本机 `.env`，由本地后端调用 GitHub API，不会返回给前端页面。
+
+保存后进入“云端任务”页面，可查看最近 workflow runs，并点击“运行云端分析”触发 `workflow_dispatch`。这相当于在 GitHub Actions 页面点击 `Run workflow`，但操作入口保留在 Mac 桌面 App 内。
+
 ### 配置备份 / 恢复 `.env`
 
 - WebUI 与桌面端都可以从 `系统设置 -> 配置备份` 看到 `导出 .env` 和 `导入 .env` 按钮

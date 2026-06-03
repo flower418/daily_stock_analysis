@@ -503,6 +503,18 @@ const settingsHelpZhCN: SettingsHelpMap = {
     impact: ['影响定时任务和手动运行是否在休市日执行。'],
     notes: ['关闭后休市日可能生成缺少实时行情的报告。'],
   },
+  'settings.system.github_actions': {
+    title: 'GitHub Actions 云端任务',
+    summary: '让本地桌面端连接你的 GitHub fork，查看并手动触发云端每日分析 workflow。',
+    usage: '填写仓库 owner/repo、fine-grained GitHub token、workflow 文件名和分支。保存后进入左侧“云端任务”页面查看运行记录或触发一次分析。',
+    valueNotes: [
+      'Token 建议只授权目标仓库，至少需要读取 workflow runs 和触发 workflow_dispatch 的权限。',
+      'Token 保存在本机 .env 中，由本地后端调用 GitHub API，不会返回给前端页面。',
+      '云端任务使用 GitHub Secrets / Variables 中的股票、模型和通知配置，不会自动同步本机设置。',
+    ],
+    impact: ['仅影响桌面端 / WebUI 的云端任务页面，不改变本机分析流程和 GitHub Actions 定时 cron。'],
+    notes: ['如果返回 404/401，请检查仓库名、token 权限和 workflow 文件名。'],
+  },
   'settings.system.HTTP_PROXY': {
     title: '网络代理',
     summary: '为外部 API、模型服务或搜索请求配置代理地址。',

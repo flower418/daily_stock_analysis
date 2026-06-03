@@ -8,6 +8,8 @@ export type SystemConfigCategory =
   | 'backtest'
   | 'uncategorized';
 
+export type GitHubActionsMode = 'full' | 'market-only' | 'stocks-only';
+
 export type SystemConfigDataType =
   | 'string'
   | 'integer'
@@ -257,6 +259,46 @@ export interface DiscoverLLMChannelModelsResponse {
   resolvedProtocol?: string | null;
   models: string[];
   latencyMs?: number | null;
+}
+
+export interface GitHubActionsRunSummary {
+  id: number;
+  name: string;
+  event: string;
+  status: string;
+  conclusion?: string | null;
+  displayTitle: string;
+  headBranch: string;
+  headSha: string;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+  runStartedAt?: string | null;
+  htmlUrl: string;
+}
+
+export interface GitHubActionsStatusResponse {
+  configured: boolean;
+  repo: string;
+  workflow: string;
+  branch: string;
+  workflowState: string;
+  workflowUrl: string;
+  runs: GitHubActionsRunSummary[];
+}
+
+export interface DispatchGitHubActionsRequest {
+  mode: GitHubActionsMode;
+  forceRun?: boolean;
+}
+
+export interface DispatchGitHubActionsResponse {
+  success: boolean;
+  message: string;
+  repo: string;
+  workflow: string;
+  branch: string;
+  mode: GitHubActionsMode;
+  forceRun: boolean;
 }
 
 export interface SystemConfigValidationErrorResponse {

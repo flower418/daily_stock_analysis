@@ -4,7 +4,10 @@ import { toCamelCase } from './utils';
 import type {
   DiscoverLLMChannelModelsRequest,
   DiscoverLLMChannelModelsResponse,
+  DispatchGitHubActionsRequest,
+  DispatchGitHubActionsResponse,
   ExportSystemConfigResponse,
+  GitHubActionsStatusResponse,
   ImportSystemConfigRequest,
   SetupStatusResponse,
   SystemConfigConflictResponse,
@@ -234,6 +237,19 @@ export const systemConfigApi = {
 
       throw error;
     }
+  },
+
+  async getGitHubActionsStatus(): Promise<GitHubActionsStatusResponse> {
+    const response = await apiClient.get<Record<string, unknown>>('/api/v1/github-actions/status');
+    return toCamelCase<GitHubActionsStatusResponse>(response.data);
+  },
+
+  async dispatchGitHubActions(payload: DispatchGitHubActionsRequest): Promise<DispatchGitHubActionsResponse> {
+    const response = await apiClient.post<Record<string, unknown>>('/api/v1/github-actions/dispatch', {
+      mode: payload.mode,
+      force_run: payload.forceRun ?? false,
+    });
+    return toCamelCase<DispatchGitHubActionsResponse>(response.data);
   },
 
   /**
