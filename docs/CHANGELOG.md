@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+- [修复] macOS 桌面端打包阶段预置并收集 AlphaSift 适配层，避免发布包开启选股后缺少 `alphasift.dsa_adapter`。
+- [修复] AlphaSift 自动安装接口在打包桌面端返回明确的不支持运行期 pip 安装错误，避免误执行 `stock_analysis -m pip`。
 - [修复] 调整 Web/桌面端左侧导航选中态宽度与内容对齐，避免蓝色选中框溢出侧栏边界。
 - [改进] 首次运行配置校验补充缺失 AI Key、空 STOCK_LIST、Telegram/邮件成对字段和 Webhook URL 前缀诊断。
 - [新功能] 桌面端新增“云端任务”页，可通过本机保存的 GitHub Actions 配置查看并手动触发每日分析 workflow。

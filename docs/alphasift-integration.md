@@ -60,7 +60,7 @@ AlphaSift 侧已在 `ZhuLinsen/alphasift@b2ca66dd47001b9a09890cfe21c2b18c7219ccf
 ## DSA 后端行为
 
 - `/api/v1/alphasift/status`：返回开关、可用性、默认安装来源标识和适配层元信息；不会暴露完整安装来源。
-- `/api/v1/alphasift/install`：保留给受控部署场景；普通 Web/桌面开关不会调用它。接口要求有效管理员会话，只允许默认受信任安装来源。
+- `/api/v1/alphasift/install`：保留给受控源码部署场景；普通 Web/桌面开关不会调用它。接口要求有效管理员会话，只允许默认受信任安装来源。打包桌面端不支持运行期 pip 安装，如果依赖缺失会返回明确错误，用户应升级到已内置 AlphaSift 的桌面包或改用源码部署。
 - `/api/v1/alphasift/strategies`：读取 AlphaSift 策略列表。
 - `/api/v1/alphasift/screen`：调用适配层 `screen(..., use_llm=True)`，返回候选、运行元信息和 LLM 展示字段。
 
@@ -77,6 +77,7 @@ AlphaSift 侧已在 `ZhuLinsen/alphasift@b2ca66dd47001b9a09890cfe21c2b18c7219ccf
 - 未开启返回 `403 alphasift_disabled`。
 - 受控安装接口未开启管理员认证或没有有效管理员会话时返回 `403 alphasift_install_auth_required` 或 `401 alphasift_install_unauthorized`。
 - 受控安装接口来源不受信任返回 `403 alphasift_install_spec_not_allowed`。
+- 打包桌面端尝试运行期自动安装返回 `424 alphasift_install_packaged_runtime_unsupported`。
 - AlphaSift 未安装、缺少适配层或适配层不可调用返回 `424`。
 - 市场或策略被适配层拒绝时返回 `400/422`。
 - 运行失败返回 `424 alphasift_screen_failed`。
@@ -94,7 +95,7 @@ AlphaSift 侧已在 `ZhuLinsen/alphasift@b2ca66dd47001b9a09890cfe21c2b18c7219ccf
 
 源码运行的桌面端复用同一个 Python 后端环境，因此与 Web 端一致，可以通过设置页或 `.env` 开启。
 
-打包后的桌面端不依赖运行期 `pip install`：`scripts/build-backend.ps1` 会在构建阶段安装默认 `ALPHASIFT_INSTALL_SPEC` 并把 `alphasift.dsa_adapter` 收集进 PyInstaller 产物。发布包默认仍关闭；用户在 Web 设置页开启后只切换 `ALPHASIFT_ENABLED` 并检查适配层可用性。
+打包后的桌面端不依赖运行期 `pip install`：`scripts/build-backend.ps1` 和 `scripts/build-backend-macos.sh` 会在构建阶段安装默认 `ALPHASIFT_INSTALL_SPEC` 并把 `alphasift.dsa_adapter` 收集进 PyInstaller 产物。发布包默认仍关闭；用户在 Web 设置页开启后只切换 `ALPHASIFT_ENABLED` 并检查适配层可用性。
 
 ## Docker 说明
 

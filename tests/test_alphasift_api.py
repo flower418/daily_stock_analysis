@@ -293,6 +293,25 @@ class AlphaSiftOpportunitiesApiTestCase(unittest.TestCase):
         run_mock.assert_called_once()
         self.assertIn(DEFAULT_ALPHASIFT_TEST_SPEC, run_mock.call_args.args[0])
 
+    def test_install_rejects_packaged_runtime_without_subprocess(self) -> None:
+        config = self._config(enabled=True)
+
+        with (
+            patch("api.v1.endpoints.alphasift._is_alphasift_available", return_value=False),
+            patch.object(alphasift_endpoint.sys, "frozen", True, create=True),
+            patch("api.v1.endpoints.alphasift.subprocess.run") as run_mock,
+        ):
+            with self.assertRaises(HTTPException) as caught:
+                alphasift_endpoint.alphasift_install(config=config)
+
+        self.assertEqual(caught.exception.status_code, 424)
+        self.assertEqual(
+            caught.exception.detail["error"],
+            "alphasift_install_packaged_runtime_unsupported",
+        )
+        self.assertIn("打包后的桌面端不支持", caught.exception.detail["message"])
+        run_mock.assert_not_called()
+
     def test_install_rejects_when_alphasift_adapter_reports_unavailable(self) -> None:
         config = self._config(enabled=True)
         completed = SimpleNamespace(returncode=0, stdout="installed", stderr="")
